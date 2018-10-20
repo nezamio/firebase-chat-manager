@@ -1,17 +1,18 @@
-const {db} = require('./db');
-const {config} = require('./../config');
-
 class Chat {
+    static Application() {};
+    static Configurations() {};
 
     /**
      * Class constructor
      * @param chatId
      */
     constructor(chatId) {
+        if (typeof this.constructor.Configurations === 'function')
+            throw new Error("please setup your configurations first.");
 
-        this.id  = chatId;
-        this.ref = `${config.namespace}/${chatId}`;
-        this.config = config;
+        this.app = this.constructor.Application(this.constructor.Configurations);
+        this.config = this.app.getConfigurations();
+        this.ref = `${this.config.namespace}/${chatId}`;
         this.timestamper = require('time-stamp');
     }
 
@@ -22,7 +23,7 @@ class Chat {
      * @returns {Chat}
      */
     sendMessage({text, senderId}) {
-        db.ref(this.ref).child('messages').push({text, senderId, timestamp: this.timestamper(this.config.timestampFormat)});
+        this.app.db.ref(this.ref).child('messages').push({text, senderId, timestamp: this.timestamper(this.config.timestampFormat)});
         return this;
     }
 
@@ -31,7 +32,7 @@ class Chat {
      * @returns {Promise<firebase.database.DataSnapshot>}
      */
     getMessages() {
-        return db.ref(this.ref).child('messages').once('value');
+        return this.app.db.ref(this.ref).child('messages').once('value');
     }
 
     /**
@@ -40,11 +41,15 @@ class Chat {
      * @returns {Promise<firebase.database.DataSnapshot>}
      */
     getUserMessages(id) {
-        return db.ref(this.ref).child('messages').orderByChild('senderId').equalTo(id).once('value');
+        return this.app.db.ref(this.ref).child('messages').orderByChild('senderId').equalTo(id).once('value');
     }
 
+    /**
+     * Clear chat messages
+     * @returns {Promise<any>}
+     */
     clearMessages() {
-        return db.ref(this.ref).child('messages').remove();
+        return this.app.db.ref(this.ref).child('messages').remove();
     }
 
     /**
@@ -56,13 +61,15 @@ class Chat {
      */
     static findOrCreate({chatId, senderId, receiverId}) {
 
+        let config = this.Application().getConfigurations();
+
         const ref = `${config.namespace}/${chatId}`;
 
-        db.ref(config.namespace).orderByKey().equalTo(chatId.toString()).once('value', snap => {
+        Chat.Application().db.ref(config.namespace).orderByKey().equalTo(chatId.toString()).once('value', snap => {
 
             if (! snap.exists()) {
 
-                db.ref(ref).set({
+                Chat.Application().db.ref(ref).set({
                     senderId,
                     receiverId,
                 });

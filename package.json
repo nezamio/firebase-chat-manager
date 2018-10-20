@@ -1,10 +1,11 @@
 {
   "name": "firebase-chat-manager",
   "version": "1.0.0",
-  "description": "Nodejs helper to manage firestore realtime database for chatting rooms",
+  "description": "Nodejs helper to manage firebase realtime database for chatting rooms",
   "main": "src/manager.js",
   "scripts": {
-    "test": "mocha --reporter spec"
+    "test": "mocha --reporter spec",
+    "cover": "node_modules\\istanbul\\lib\\cli.js cover node_modules\\mocha\\bin\\_mocha -- -R spec test/*"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,8 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "coveralls": "^3.0.2",
+    "istanbul": "^0.4.5",
     "mocha": "^5.2.0"
   }
 }

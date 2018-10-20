@@ -1,6 +1,6 @@
-const {Chat} = require('./modules/Chat');
-const {db} = require('./modules/db');
+const {App} = require('./modules/App');
+const {Chat} =  require("./modules/Chat");
 
-module.exports = {
-    Chat, db
-};
+Chat.Application = App.init;
+
+module.exports = Chat;
