@@ -12,7 +12,7 @@ Initialization:
 
     var Chat = require('@abdullaalsayyed/firebase-chat-manager');
 
-    Chat.configurations = const config = {
+    Chat.configurations = {
                               apiKey: "<your-api-key>",
                               authDomain: "<project-id>.firebaseapp.com",
                               databaseURL: "https://<project-id>.firebaseio.com",
@@ -28,13 +28,11 @@ Create new chat:
     var chat = new Chat(123);
      
     // If there is no chat created with that id, it will return that chat object or it will create a new instance.
-    Chat.findOrCreate({chatId: 2225, senderId: 2222, receiverId: 3333});
+    var chat = Chat.findOrCreate({chatId: 2225, senderId: 2222, receiverId: 3333});
   
 Get Chat Messages: 
 
-    chat.getMessages().then(function (message) {
-                console.log(message.val());
-            });  
+    chat.getMessages().then((message) => { console.log(message.val()) });  
             
 Send a new Message: 
 
