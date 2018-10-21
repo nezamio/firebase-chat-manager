@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/abdullaalsayyed/firestore-chat-manager.git"
+    "url": "git+https://github.com/nezamio/firebase-chat-manager.git"
   },
   "author": "abdullaalsayyed",
   "license": "ISC",
   "bugs": {
-    "url": "https://gitlab.com/abdullaalsayyed/firestore-chat-manager/issues"
+    "url": "https://github.com/nezamio/firebase-chat-manager/issues"
   },
-  "homepage": "https://gitlab.com/abdullaalsayyed/firestore-chat-manager#README",
+  "homepage": "https://github.com/nezamio/firestore-chat-manager",
   "dependencies": {
     "firebase": "^5.5.4",
     "time-stamp": "^2.1.0"
